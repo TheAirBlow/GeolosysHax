@@ -3,7 +3,7 @@ plugins {
 }
 
 group = 'net.theairblow'
-version = '1.2.0'
+version = '2.0.0'
 
 java {
     archivesBaseName = 'geolosyshax'
@@ -46,21 +46,16 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 repositories {
     maven {
-        url 'https://cdn.sussy.tech/repo/'
-    }
-    maven {
-        url 'https://cdn.sussy.tech/repo2/'
-    }
-    maven {
         url "https://cursemaven.com"
     }
+
+    mavenCentral()
 }
 
 dependencies {
     minecraft 'net.minecraftforge:forge:1.12.2-14.23.5.2860'
-    implementation('net.theairblow:capatible:1.0.2') {
-        exclude group: 'zone.rong', module: 'mixinbooter'
-    }
+    implementation 'info.journeymap:journeymap-api:1.12-1.4'
+    implementation 'curse.maven:geolosys-271856:2827666'
     implementation 'curse.maven:geolosys-271856:2827666'
 }
 
