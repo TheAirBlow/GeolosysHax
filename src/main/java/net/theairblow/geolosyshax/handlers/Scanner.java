@@ -4,6 +4,10 @@ import com.oitsjustjose.geolosys.common.api.world.IOre;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
+import net.minecraft.util.text.Style;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.event.ClickEvent;
+import net.minecraft.util.text.event.HoverEvent;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.event.world.ChunkEvent;
 import net.minecraftforge.event.world.WorldEvent;
@@ -48,7 +52,14 @@ public class Scanner {
             final BlockPos start = match.get().start;
 
             if (notify.contains(deposit)) {
-                Chat.sendPrefix("§2Found \"%s\" at %s %s %s",
+                Style style = new Style();
+                if (MapPlugin.hasJourneyMap())
+                    style.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND,
+                        String.format("!hax map waypoint %s %s %s %s",
+                            start.getX(), start.getY(), start.getZ(), deposit.getFriendlyName())))
+                        .setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
+                            new TextComponentString("§aClick to create waypoint")));
+                Chat.sendPrefix(style, "§2Found \"%s\" at %s %s %s",
                     deposit.getFriendlyName(), start.getX(), start.getY(), start.getZ());
             }
 

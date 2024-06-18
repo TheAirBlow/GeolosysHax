@@ -156,21 +156,21 @@ public class Commands {
                 }
 
                 Chat.send("§c====== §2%s §a(Page %s/%s)§c ======",
-                        vein.getFriendlyName(), page, pages);
+                    vein.getFriendlyName(), page, pages);
                 final List<BlockPos> sorted = Scanner.veins.get(vein);
                 sorted.sort(Comparator.comparingDouble(pos -> pos.distanceSq(
-                        minecraft.player.posX, minecraft.player.posY, minecraft.player.posZ)));
+                    minecraft.player.posX, minecraft.player.posY, minecraft.player.posZ)));
                 for (BlockPos pos : sorted.stream().skip((page - 1) * 10L)
                         .limit(10).collect(Collectors.toList())) {
                     Style style = new Style();
                     if (MapPlugin.hasJourneyMap())
                         style.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND,
-                                        String.format("!hax map waypoint %s %s %s %s",
-                                                pos.getX(), pos.getY(), pos.getZ(), vein.getFriendlyName())))
-                                .setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
-                                        new TextComponentString("§aClick to create waypoint")));
+                            String.format("!hax map waypoint %s %s %s %s",
+                                pos.getX(), pos.getY(), pos.getZ(), vein.getFriendlyName())))
+                            .setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
+                                new TextComponentString("§aClick to create waypoint")));
                     Chat.send(style, "§3-> §a%s %s %s",
-                            pos.getX(), pos.getY(), pos.getZ());
+                        pos.getX(), pos.getY(), pos.getZ());
                 }
 
                 return;
