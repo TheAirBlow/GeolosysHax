@@ -3,7 +3,7 @@ plugins {
 }
 
 group = 'net.theairblow'
-version = '2.0.0'
+version = '2.1.0'
 
 java {
     archivesBaseName = 'geolosyshax'
@@ -40,6 +40,8 @@ minecraft {
             }
         }
     }
+
+    accessTransformer 'src/main/resources/META-INF/geolosyshax_at.cfg'
 }
 
 sourceSets.main.resources { srcDir 'src/generated/resources' }
@@ -56,7 +58,6 @@ dependencies {
     minecraft 'net.minecraftforge:forge:1.12.2-14.23.5.2860'
     implementation 'info.journeymap:journeymap-api:1.12-1.4'
     implementation 'curse.maven:geolosys-271856:2827666'
-    implementation 'curse.maven:geolosys-271856:2827666'
 }
 
 jar {
@@ -68,7 +69,8 @@ jar {
                 "Implementation-Title"    : project.name,
                 "Implementation-Version"  : project.jar.archiveVersion,
                 "Implementation-Vendor"   : "TheAirBlow",
-                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+                'FMLAT': 'geolosyshax_at.cfg'
         ])
     }
 }
