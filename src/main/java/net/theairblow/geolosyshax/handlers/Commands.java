@@ -73,7 +73,7 @@ public class Commands {
                 Chat.send("§c====== §2List of all ore veins:§c ======");
                 for (int i = 0; i < GeolosysAPI.oreBlocks.size(); i++) {
                     final IOre vein = GeolosysAPI.oreBlocks.get(i);
-                    Chat.sendPrefix("§3-> §a%s §c(ID: %s)",
+                    Chat.send("§3-> §a%s §c(ID: %s)",
                         vein.getFriendlyName(), i);
                 }
                 break;

@@ -44,10 +44,18 @@ public class Scanner {
     }
 
     public static void autoScan(Chunk chunk) {
-        if (scanned.contains(chunk.getPos())) return;
         executor.execute(() -> {
+            if (scanned.contains(chunk.getPos())) return;
             final Optional<Geolosys.Match> match = Geolosys.getDeposit(chunk);
-            if (!match.isPresent()) return;
+            if (!match.isPresent()) {
+                synchronized (scanned) {
+                    scanned.add(chunk.getPos());
+                    if (scanned.size() > Configuration.maxChunks)
+                        scanned.remove(0);
+                }
+
+                return;
+            }
             final IOre deposit = match.get().deposit;
             final BlockPos start = match.get().start;
 
@@ -68,14 +76,20 @@ public class Scanner {
 
             synchronized (scanned) {
                 scanned.add(chunk.getPos());
-            }
+                synchronized (veins) {
+                    if (!veins.containsKey(deposit))
+                        veins.put(deposit, new ArrayList<>());
+                    final List<BlockPos> list = veins.get(deposit);
+                    if (list.contains(start)) return;
+                    list.add(start);
+                    if (list.size() > Configuration.maxVeins) {
+                        scanned.remove(new ChunkPos(list.get(0)));
+                        list.remove(0);
+                    }
+                }
 
-            synchronized (veins) {
-                if (!veins.containsKey(deposit))
-                    veins.put(deposit, new ArrayList<>());
-                final List<BlockPos> list = veins.get(deposit);
-                if (list.contains(start)) return;
-                list.add(start);
+                if (scanned.size() > Configuration.maxChunks)
+                    scanned.remove(0);
             }
         });
     }
