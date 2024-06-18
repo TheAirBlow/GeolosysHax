@@ -25,8 +25,8 @@ public class Commands {
     @SubscribeEvent
     public static void onChat(ClientChatEvent event) {
         final Minecraft minecraft = Minecraft.getMinecraft();
-        final String message = event.getOriginalMessage().toLowerCase();
-        if (!message.startsWith("!hax")) return;
+        final String message = event.getOriginalMessage();
+        if (!message.toLowerCase().startsWith("!hax")) return;
         event.setCanceled(true);
         minecraft.ingameGUI.getChatGUI().addToSentMessages(message);
         final String[] args = message.split(" ");
@@ -38,7 +38,6 @@ public class Commands {
                 "§2!hax notify clear - §3Disables all enabled notifications\n" +
                 "§2!hax info [ID] - §3Prints all info about an ore vein\n" +
                 "§2!hax find - §3Search for an ore vein in current chunk\n" +
-                "§2!hax list - §3Lists all vein names and their IDs\n" +
                 "§2!hax toggle - §3Toggles automatic chunk scanning\n" +
                 "§2!hax scan - §3Manually scan all loaded chunks\n" +
                 "§2!hax clear - §3Clears list of found veins");
@@ -68,15 +67,6 @@ public class Commands {
                 Chat.sendPrefix("§6Searching for an ore vein in this chunk...");
                 Scanner.manualScan(minecraft.world.getChunk(minecraft.player.chunkCoordX, minecraft.player.chunkCoordZ));
                 return;
-            }
-            case "list": {
-                Chat.send("§c====== §2List of all ore veins:§c ======");
-                for (int i = 0; i < GeolosysAPI.oreBlocks.size(); i++) {
-                    final IOre vein = GeolosysAPI.oreBlocks.get(i);
-                    Chat.send("§3-> §a%s §c(ID: %s)",
-                        vein.getFriendlyName(), i);
-                }
-                break;
             }
             case "scan": {
                 Chat.sendPrefix("§2All currently loaded chunks were queued.");
@@ -123,7 +113,7 @@ public class Commands {
                 IOre vein = oreBlocks.get(i);
                 if (Scanner.veins.containsKey(vein)) {
                     Chat.send(new Style()
-                            .setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "!hax list " + i))
+                            .setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "!hax found " + i))
                             .setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
                                 new TextComponentString("§aClick to list found vein coordinates"))),
                         "§3-> §a%s §5(ID: %s, %s veins)",
@@ -289,11 +279,10 @@ public class Commands {
             }
 
             MapPlugin.addWaypoint(x, y, z, name.toString());
-            Chat.sendPrefix("§2Successfully created waypoint \"%s\" at %s %s %s",
-                    name.toString(), x, y, z);
+            Chat.sendPrefix("§2Successfully created a waypoint!");
         } catch (Exception e) {
             GeolosysHax.LOGGER.error("Failed to create waypoint", e);
-            Chat.sendPrefix("§4Failed to create a JourneyMap waypoint!");
+            Chat.sendPrefix("§4Failed to create a waypoint!");
         }
     }
 }

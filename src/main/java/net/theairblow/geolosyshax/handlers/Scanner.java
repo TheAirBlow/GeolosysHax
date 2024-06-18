@@ -67,7 +67,7 @@ public class Scanner {
                             start.getX(), start.getY(), start.getZ(), deposit.getFriendlyName())))
                         .setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
                             new TextComponentString("§aClick to create waypoint")));
-                Chat.sendPrefix(style, "§2Found \"%s\" at %s %s %s",
+                Chat.sendPrefix(style, "§2Found %s at %s %s %s",
                     deposit.getFriendlyName(), start.getX(), start.getY(), start.getZ());
             }
 
@@ -110,7 +110,14 @@ public class Scanner {
             final IOre deposit = match.get().deposit;
             final BlockPos start = match.get().start;
             minecraft.addScheduledTask(() -> {
-                Chat.send(
+                Style style = new Style();
+                if (MapPlugin.hasJourneyMap())
+                    style.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND,
+                        String.format("!hax map waypoint %s %s %s %s",
+                            start.getX(), start.getY(), start.getZ(), deposit.getFriendlyName())))
+                        .setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
+                            new TextComponentString("§aClick to create waypoint")));
+                Chat.send(style,
                     "§c======== §2Vein Search Result§c ========\n" +
                     "§2Type: §a%s\n" +
                     "§2Location: §a%s %s %s",

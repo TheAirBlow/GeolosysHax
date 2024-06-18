@@ -6,7 +6,7 @@ import net.minecraftforge.common.config.Config;
 public class Configuration {
     @Config.Comment("How many threads should be used for scanning chunks.")
     @Config.Name("Scanner threads")
-    public static int threads = 4;
+    public static int threads = 2;
 
     @Config.Comment("How many ore veins coordinates should be kept stored in memory.")
     @Config.Name("Maximum found list size")
