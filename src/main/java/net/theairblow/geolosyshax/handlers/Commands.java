@@ -75,10 +75,6 @@ public class Commands {
                 break;
             }
             case "clear": {
-                synchronized(Scanner.scanned) {
-                    Scanner.scanned.clear();
-                }
-
                 synchronized(Scanner.veins) {
                     Scanner.veins.clear();
                 }
@@ -220,8 +216,15 @@ public class Commands {
         try {
             final int id = Integer.parseInt(args[2]);
             final IOre vein = (IOre) GeolosysAPI.oreBlocks.toArray()[id];
+            if (Scanner.notify.contains(vein)) {
+                Scanner.notify.remove(vein);
+                Chat.sendPrefix("§4Disabled notifications for %s!",
+                    vein.getFriendlyName());
+                return;
+            }
+
             Scanner.notify.add(vein);
-            Chat.sendPrefix("§2Enabled notifications for \"%s\"!",
+            Chat.sendPrefix("§2Enabled notifications for %s!",
                 vein.getFriendlyName());
         } catch (Exception e) {
             Chat.sendPrefix("§4Invalid ID!");

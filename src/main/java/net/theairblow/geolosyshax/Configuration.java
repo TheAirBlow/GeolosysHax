@@ -13,12 +13,6 @@ public class Configuration {
     public static int maxVeins = 50;
 
     @Config.Comment(
-        "How many chunk coordinates should be kept stored in memory.\n" +
-        "Used for skipping scanning chunks that were scanned before.")
-    @Config.Name("Maximum scanned list size")
-    public static int maxChunks = 20;
-
-    @Config.Comment(
         "WARNING: This feature is experimental and doesn't yield good results.\n" +
         "Fallback to best match if no exact ore deposit match found.")
     @Config.Name("Fallback to best match")
