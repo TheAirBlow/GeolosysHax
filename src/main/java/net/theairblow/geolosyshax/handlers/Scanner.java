@@ -24,6 +24,7 @@ public class Scanner {
     private static final ExecutorService executor = Executors.newFixedThreadPool(Configuration.threads);
     public static final HashMap<IOre, List<BlockPos>> veins = new HashMap<>();
     public static final List<ChunkPos> scanned = new ArrayList<>();
+    public static final List<IOre> notify = new ArrayList<>();
     public static boolean enabled = false;
 
     @SubscribeEvent
@@ -45,6 +46,11 @@ public class Scanner {
             if (!match.isPresent()) return;
             final IOre deposit = match.get().deposit;
             final BlockPos start = match.get().start;
+
+            if (notify.contains(deposit)) {
+                Chat.sendPrefix("§2Found \"%s\" at %s %s %s",
+                    deposit.getFriendlyName(), start.getX(), start.getY(), start.getZ());
+            }
 
             MapPlugin.addMarker(deposit, new BlockPos(
                     chunk.getPos().x * 16, 70, chunk.getPos().z * 16));

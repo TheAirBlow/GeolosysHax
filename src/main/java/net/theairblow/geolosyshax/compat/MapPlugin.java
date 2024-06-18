@@ -64,12 +64,27 @@ public class MapPlugin implements IClientPlugin {
     }
 
     public static void addWaypoint(ImageOverlay overlay) {
+        if (!hasJourneyMap()) return;
         Waypoint waypoint = new Waypoint(
-                GeolosysHax.MOD_ID, UUID.randomUUID().toString(),
-                overlay.getTitle().split("\n")[0].split(": ")[1],
-                overlay.getDimension(), overlay.getNorthWestPoint().add(8, 0, 8));
+            GeolosysHax.MOD_ID, UUID.randomUUID().toString(),
+            overlay.getTitle().split("\n")[0].split(": ")[1],
+            overlay.getDimension(), overlay.getNorthWestPoint().add(8, 0, 8));
         try {
             jmAPI.remove(overlay);
+            jmAPI.show(waypoint);
+        } catch (Exception e) {
+            GeolosysHax.LOGGER.error("Failed to add waypoint: {0}", e);
+        }
+    }
+
+    public static void addWaypoint(int x, int y, int z, String name) {
+        if (!hasJourneyMap()) return;
+        final Minecraft minecraft = Minecraft.getMinecraft();
+        Waypoint waypoint = new Waypoint(
+            GeolosysHax.MOD_ID, UUID.randomUUID().toString(),
+            name, minecraft.world.provider.getDimension(),
+            new BlockPos(x, y, z));
+        try {
             jmAPI.show(waypoint);
         } catch (Exception e) {
             GeolosysHax.LOGGER.error("Failed to add waypoint: {0}", e);
