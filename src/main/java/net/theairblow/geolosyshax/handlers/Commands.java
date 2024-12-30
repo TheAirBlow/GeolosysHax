@@ -13,6 +13,7 @@ import net.minecraft.util.text.event.HoverEvent;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.client.event.ClientChatEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.theairblow.geolosyshax.Configuration;
 import net.theairblow.geolosyshax.GeolosysHax;
 import net.theairblow.geolosyshax.utils.Chat;
 import net.theairblow.geolosyshax.utils.Geolosys;
@@ -34,6 +35,8 @@ public class Commands {
             Chat.send("§cGeolosysHax commands:\n" +
                 "§2!hax found [ID] <page> - §3Lists coords of all veins with that ID\n" +
                 "§2!hax found - §3Lists all ore veins found by automatic scanner\n" +
+                "§2!hax threshold - §3Prints the current vein detection threshold\n" +
+                "§2!hax threshold [num] - §3Changes ore vein detection threshold\n" +
                 "§2!hax notify [ID] - §3Notify when a specific ore vein is found\n" +
                 "§2!hax notify clear - §3Disables all enabled notifications\n" +
                 "§2!hax info [ID] - §3Prints all info about an ore vein\n" +
@@ -94,9 +97,27 @@ public class Commands {
             case "notify":
                 notify(args);
                 break;
+            case "threshold":
+                threshold(args);
+                break;
             default:
                 Chat.sendPrefix("§4Unknown command, type !hax for help.");
                 break;
+        }
+    }
+
+    private static void threshold(String[] args) {
+        if (args.length < 3) {
+            Chat.sendPrefix("Current threshold value is %s", Configuration.threshold);
+            return;
+        }
+
+        try {
+            final int amount = Integer.parseInt(args[2]);
+            Configuration.threshold = amount;
+            Chat.sendPrefix("§2Successfully changed threshold to %s!", amount);
+        } catch (Exception e) {
+            Chat.sendPrefix("§4Invalid amount!");
         }
     }
 

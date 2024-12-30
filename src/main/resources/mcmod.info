@@ -4,7 +4,7 @@
     "name": "GeolosysHax",
     "description": "Finds geolosys ore veins for you automatically",
     "url": "https://github.com/TheAirBlow/GeolosysHax",
-    "version": "2.1.0",
+    "version": "2.2.0",
     "mcversion": "1.12.2",
     "updateUrl": "",
     "authorList": [

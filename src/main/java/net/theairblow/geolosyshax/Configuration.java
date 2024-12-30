@@ -4,6 +4,10 @@ import net.minecraftforge.common.config.Config;
 
 @Config(modid = "geolosyshax")
 public class Configuration {
+    @Config.Comment("How many ores should be in a chunk to be recognized as a vein.")
+    @Config.Name("Ore threshold")
+    public static int threshold = 50;
+
     @Config.Comment("How many threads should be used for scanning chunks.")
     @Config.Name("Scanner threads")
     public static int threads = 2;
